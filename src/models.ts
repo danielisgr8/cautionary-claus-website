@@ -4,7 +4,7 @@ export interface User {
   lastName: string,
   address: {
     line1: string,
-    line2: string,
+    line2?: string,
     city: string,
     usState: string,
     zip: string

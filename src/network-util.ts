@@ -20,3 +20,11 @@ export const getAllUsers = async (auth: string): Promise<string[]> => {
   });
   return response.data;
 };
+
+export const registerUser = async (user: User, auth: string) => {
+  await axios.post(`${baseUrl}/user`, user, {
+    headers: {
+      "Authorization": `Basic ${auth}`
+    }
+  });
+};

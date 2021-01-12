@@ -3,6 +3,7 @@
   height: 100%;
   width: 100%;
   margin: 0 auto;
+  overflow-y: auto;
 }
 
 @media (min-aspect-ratio: 1/1) {

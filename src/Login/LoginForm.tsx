@@ -1,21 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Form, Input, Button } from "antd";
-import { getUser } from "./network-util";
+import { Input, Form, Button } from "antd";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { getUser } from "../network-util";
+import { layout, tailLayout } from "./shared";
 
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
-};
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 },
-};
-
-interface LoginProps {
+interface LoginFormProps {
   onLogin: (username: string) => void
 }
 
-const Login = ({ onLogin }: LoginProps) => {
+const LoginForm = ({ onLogin }: LoginFormProps) => {
   const [username, setUsername] = useState<string | undefined>(undefined);
 
   useEffect(() => {
@@ -36,14 +29,16 @@ const Login = ({ onLogin }: LoginProps) => {
   return (
     <Form
       {...layout}
+      layout="vertical"
       name="basic"
       initialValues={{ remember: true }}
       onFinish={(values) => setUsername(values.username)}
+      style={{ textAlign: "left" }}
     >
       <Form.Item
         label="Username"
         name="username"
-        rules={[{ required: true, message: 'Please input your username!' }]}
+        rules={[{ required: true, message: "Username is required" }]}
       >
         <Input />
       </Form.Item>
@@ -57,4 +52,4 @@ const Login = ({ onLogin }: LoginProps) => {
   );
 };
 
-export default Login;
+export default LoginForm;
