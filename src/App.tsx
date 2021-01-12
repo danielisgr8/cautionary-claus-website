@@ -22,6 +22,8 @@ const App = () => {
     const storageValue = localStorage.getItem("loggedInUser");
     if (storageValue !== null) {
       setLoggedInUser(storageValue);
+    } else {
+      history.replace("/");
     }
   }, []);
 
@@ -43,7 +45,7 @@ const App = () => {
     <Menu onClick={({ key }) => history.push(`/profile/${key}`)}>
       {users.length > 0
         ? [loggedInUser, ...(users.filter((user) => user !== loggedInUser))].map((user) => (
-            <Menu.Item key={user}>
+            <Menu.Item key={user} style={{ fontSize: "large" }}>
               {user}
             </Menu.Item>
           ))
@@ -77,7 +79,7 @@ const App = () => {
               setLoggedInUser(username);
               history.push(`/profile/${username}`);
             }} />} />
-          <Route path="/profile/:username" render={({ match }) => <Profile username={match.params.username} loggedInUser={loggedInUser}/>} />
+          <Route path="/profile/:username" render={({ match, history }) => <Profile history={history} username={match.params.username} loggedInUser={loggedInUser}/>} />
           <ToastContainer />
         </Content>
       </Layout>
