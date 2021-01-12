@@ -1,0 +1,16 @@
+.address > p {
+  margin-bottom: 0.4rem;
+}
+
+.note {
+  border: 1px solid black;
+}
+
+.note {
+  padding: 2rem 0;
+}
+
+.note > p {
+  display: inline-block;
+  margin: 0;
+}
