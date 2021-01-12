@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import { User } from "../models";
-import { getUser } from "../network-util";
+import { getUser, tryAxiosRequest } from "../network-util";
 import { History } from "history";
 import { Divider } from "antd";
 import "./Profile.css";
@@ -18,14 +17,9 @@ const Profile = ({ username, loggedInUser, history }: ProfileProps) => {
 
   useEffect(() => {
     if (username !== "" && loggedInUser !== "") {
-      const call = async () => {
-        try {
-          setProfile(await getUser(username, loggedInUser));
-        } catch (error) {
-          toast.error(error.response.data);
-        }
-      };
-      call();
+      tryAxiosRequest(async () => {
+        setProfile(await getUser(username, loggedInUser));
+      });
     }
   }, [username, loggedInUser]);
 

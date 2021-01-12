@@ -1,7 +1,22 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 import { User } from "./models";
 
 const baseUrl = "https://68v9d9lkff.execute-api.us-west-2.amazonaws.com";
+
+export const tryAxiosRequest = async (call: Function) => {
+  try {
+    await call();
+  } catch (error) {
+    if (error.response) {
+      toast.error(error.response.data);
+    } else if (error.request) {
+      toast.error(error.request);
+    } else {
+      toast.error(error.message);
+    }
+  }
+};
 
 export const getUser = async (username: string, auth: string): Promise<User> => {
   const response = await axios.get(`${baseUrl}/profile/${username}`, {

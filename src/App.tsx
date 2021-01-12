@@ -6,9 +6,9 @@ import { Router } from "react-router";
 import "antd/dist/antd.css";
 import "./App.css";
 import Login from "./Login";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getAllUsers } from "./network-util";
+import { getAllUsers, tryAxiosRequest } from "./network-util";
 import Profile from "./Profile";
 import history from "./history";
 
@@ -30,14 +30,9 @@ const App = () => {
   useEffect(() => {
     if (loggedInUser !== "") {
       localStorage.setItem("loggedInUser", loggedInUser);
-      const call = async () => {
-        try {
-          setUsers(await getAllUsers(loggedInUser));
-        } catch (error) {
-          toast.error(error.response.data);
-        }
-      };
-      call();
+      tryAxiosRequest(async () => {
+        setUsers(await getAllUsers(loggedInUser));
+      });
     }
   }, [loggedInUser]);
 

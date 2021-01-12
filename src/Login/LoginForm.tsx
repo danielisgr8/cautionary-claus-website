@@ -1,7 +1,6 @@
 import { Input, Form, Button } from "antd";
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { getUser } from "../network-util";
+import { getUser, tryAxiosRequest } from "../network-util";
 import { layout, tailLayout } from "./shared";
 
 interface LoginFormProps {
@@ -13,15 +12,10 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
 
   useEffect(() => {
     if(username !== undefined) {
-      const call = async () => {
-        try {
-          await getUser(username, username);
-          onLogin(username);
-        } catch (error) {
-          toast.error(error.response.data);
-        }
-      }
-      call();
+      tryAxiosRequest(async () => {
+        await getUser(username, username);
+        onLogin(username);
+      });
       setUsername(undefined);
     }
   }, [username, onLogin]);

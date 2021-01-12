@@ -1,8 +1,7 @@
 import { Input, Form, Button } from "antd";
 import React, { useState, useEffect } from "react";
 import { layout, tailLayout } from "./shared";
-import { registerUser } from "../network-util";
-import { toast } from "react-toastify";
+import { registerUser, tryAxiosRequest } from "../network-util";
 
 interface RegistrationFormProps {
   onRegister: (username: string) => void
@@ -13,15 +12,10 @@ const RegistrationForm = ({ onRegister }: RegistrationFormProps) => {
 
   useEffect(() => {
     if (submittedValues !== undefined) {
-      const call = async () => {
-        try {
-          await registerUser(submittedValues, submittedValues.username);
-          onRegister(submittedValues.username);
-        } catch (error) {
-          toast.error(error.response.data);
-        }
-      };
-      call();
+      tryAxiosRequest(async () => {
+        await registerUser(submittedValues, submittedValues.username);
+        onRegister(submittedValues.username);
+      });
     }
   }, [submittedValues, onRegister]);
 
