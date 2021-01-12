@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { User } from "./models";
-import { getUser } from "./network-util";
+import { User } from "../models";
+import { getUser } from "../network-util";
 
 interface ProfileProps {
   username: string,
