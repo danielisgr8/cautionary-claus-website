@@ -28,3 +28,22 @@ export const registerUser = async (user: User, auth: string) => {
     }
   });
 };
+
+export const addNote = async (username: string, message: string, auth: string): Promise<string> => {
+  const response = await axios.put(`${baseUrl}/profile/${username}/note`, {
+    message
+  }, {
+    headers: {
+      "Authorization": `Basic ${auth}`
+    }
+  });
+  return response.data.id;
+};
+
+export const deleteNote = async (username: string, id: string, auth: string) => {
+  await axios.delete(`${baseUrl}/profile/${username}/note?id=${id}`, {
+    headers: {
+      "Authorization": `Basic ${auth}`
+    }
+  });
+};
