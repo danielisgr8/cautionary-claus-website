@@ -44,6 +44,14 @@ export const registerUser = async (user: User, auth: string) => {
   });
 };
 
+export const updateProfile = async (username: string, user: User, auth: string) => {
+  await axios.put(`${baseUrl}/profile/${username}`, user, {
+    headers: {
+      "Authorization": `Basic ${auth}`
+    }
+  });
+};
+
 export const addNote = async (username: string, message: string, auth: string): Promise<string> => {
   const response = await axios.put(`${baseUrl}/profile/${username}/note`, {
     message

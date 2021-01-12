@@ -1,45 +1,53 @@
 import { Input, Form, Button } from "antd";
 import React, { useState, useEffect } from "react";
-import { layout, tailLayout } from "./shared";
-import { registerUser, tryAxiosRequest } from "../network-util";
+import { layout, tailLayout } from "../Login/shared";
+import { User } from "../models";
+import { tryAxiosRequest, updateProfile } from "../network-util";
 
-interface RegistrationFormProps {
-  onRegister: (username: string) => void
+interface EditFormProps {
+  profile: User,
+  loggedInUser: string,
+  onCancel: () => void,
+  onEdit: (newValues: User) => void
 }
 
-const RegistrationForm = ({ onRegister }: RegistrationFormProps) => {
+const EditForm = ({ profile, loggedInUser, onEdit, onCancel }: EditFormProps) => {
   const [submittedValues, setSubmittedValues] = useState<any | undefined>(undefined);
 
   useEffect(() => {
-    if (submittedValues !== undefined) {
+    if (submittedValues !== undefined && loggedInUser !== "") {
       tryAxiosRequest(async () => {
-        await registerUser(submittedValues, submittedValues.username);
-        onRegister(submittedValues.username);
+        await updateProfile(profile.username, submittedValues, loggedInUser);
+        setSubmittedValues(undefined);
+        onEdit({
+          ...submittedValues
+        });
       });
     }
-  }, [submittedValues, onRegister]);
+  }, [submittedValues, loggedInUser, onEdit, profile]);
 
+  if (profile.username !== loggedInUser) {
+    return (
+      <div>
+        <h2>You can't edit someone else's profile!</h2>
+        <Button type="primary" onClick={onCancel}>Go back</Button>
+      </div>
+    );
+  }
   return (
     <Form
       {...layout}
       layout="vertical"
-      name="registrationForm"
+      name="editForm"
+      id={"editForm"}
+      initialValues={profile}
       onFinish={(values) => setSubmittedValues(values)}
       style={{ textAlign: "left" }}
     >
-      <Form.Item
-        label="Username"
-        name="username"
-        rules={[{ required: true, message: "Username is required" }]}
-      >
-        <Input />
-      </Form.Item>
-
       <Form.Item>
         <Form.Item
           label="First Name"
           name="firstName"
-          rules={[{ required: true, message: "First name is required" }]}
           style={{ display: "inline-block", marginBottom: "0", marginRight: "0.5rem" }}
         >
           <Input />
@@ -48,7 +56,6 @@ const RegistrationForm = ({ onRegister }: RegistrationFormProps) => {
         <Form.Item
           label="Last Name"
           name="lastName"
-          rules={[{ required: true, message: "Last name is required" }]}
           style={{ display: "inline-block", marginBottom: "0" }}
         >
           <Input />
@@ -57,12 +64,10 @@ const RegistrationForm = ({ onRegister }: RegistrationFormProps) => {
 
       <Form.Item
         label="Address"
-        required
       >
         <Form.Item
             name={["address", "line1"]}
             style={{ marginBottom: "0.2rem" }}
-            rules={[{ required: true, message: "Line 1 is required" }]}
         >
           <Input placeholder="Line 1" />
         </Form.Item>
@@ -78,7 +83,6 @@ const RegistrationForm = ({ onRegister }: RegistrationFormProps) => {
         <Form.Item
           label="City"
           name={["address", "city"]}
-          rules={[{ required: true, message: "City is required" }]}
           style={{ display: "inline-block", marginBottom: "0", marginRight: "0.5rem" }}
         >
           <Input />
@@ -87,7 +91,6 @@ const RegistrationForm = ({ onRegister }: RegistrationFormProps) => {
         <Form.Item
           label="State"
           name={["address", "usState"]}
-          rules={[{ required: true, message: "State is required" }]}
           style={{ display: "inline-block", marginBottom: "0" }}
         >
           <Input />
@@ -97,19 +100,25 @@ const RegistrationForm = ({ onRegister }: RegistrationFormProps) => {
       <Form.Item
         label="Zip"
         name={["address", "zip"]}
-        rules={[{ required: true, message: "Zip is required" }]}
         wrapperCol={{ span: 6 }}
       >
         <Input />
       </Form.Item>
 
       <Form.Item {...tailLayout}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
+        <Form.Item style={{ display: "inline-block", marginRight: "0.5rem"}}>
+          <Button onClick={onCancel}>
+            Cancel
+          </Button>
+        </Form.Item>
+        <Form.Item style={{ display: "inline-block"}}>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
       </Form.Item>
     </Form>
   );
 };
 
-export default RegistrationForm;
+export default EditForm;

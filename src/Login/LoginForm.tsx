@@ -24,8 +24,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
     <Form
       {...layout}
       layout="vertical"
-      name="basic"
-      initialValues={{ remember: true }}
+      name="loginForm"
       onFinish={(values) => setUsername(values.username)}
       style={{ textAlign: "left" }}
     >
