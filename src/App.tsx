@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Layout, Menu, Dropdown } from "antd";
 import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
+import { Router } from "react-router";
 import "antd/dist/antd.css";
 import "./App.css";
 import Login from "./Login";
@@ -9,6 +10,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getAllUsers } from "./network-util";
 import Profile from "./Profile";
+import history from "./history";
 
 const { Header, Content } = Layout;
 
@@ -38,7 +40,7 @@ const App = () => {
   }, [loggedInUser]);
 
   const menu = (
-    <Menu>
+    <Menu onClick={({ key }) => history.push(`/profile/${key}`)}>
       {users.length > 0
         ? [loggedInUser, ...(users.filter((user) => user !== loggedInUser))].map((user) => (
             <Menu.Item key={user}>
@@ -63,7 +65,7 @@ const App = () => {
   );
 
   return (
-    <Router>
+    <Router history={history}>
       <Layout className="App">
         <Header className="header" >
           {users.length > 0 && dropdown}
