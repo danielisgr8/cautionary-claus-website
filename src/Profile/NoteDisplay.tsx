@@ -53,7 +53,7 @@ const NoteDisplay = ({ username, notes, loggedInUser, onNewNote, onNoteDeleted }
         <Row justify="center" gutter={[0, 32]} key={note.id}>
           <Col span={20}>
             <div className="note">
-              <p>{`${note.message} `.repeat(100)}</p>
+              <p>{note.message}</p>
             </div>
           </Col>
           <Col span={4}>
