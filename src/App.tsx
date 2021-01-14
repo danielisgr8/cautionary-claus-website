@@ -71,8 +71,8 @@ const App = () => {
         </Header>
         <Content style={{ padding: "0.5rem 0.5rem" }}>
           <Route path="/" exact render={({ history }) => <Login onLogin={(username) => {
-              setLoggedInUser(username);
               history.push(`/profile/${username}`);
+              setLoggedInUser(username);
             }} />} />
           <Route path="/profile/:username" render={({ match, history }) => <Profile history={history} username={match.params.username} loggedInUser={loggedInUser}/>} />
           <ToastContainer />

@@ -16,6 +16,7 @@ const RegistrationForm = ({ onRegister }: RegistrationFormProps) => {
         await registerUser(submittedValues, submittedValues.username);
         onRegister(submittedValues.username);
       });
+      setSubmittedValues(undefined);
     }
   }, [submittedValues, onRegister]);
 
