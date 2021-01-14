@@ -33,7 +33,7 @@ const RegistrationForm = ({ onRegister }: RegistrationFormProps) => {
         name="username"
         rules={[{ required: true, message: "Username is required" }]}
       >
-        <Input />
+        <Input spellCheck={false} autoCapitalize="off" />
       </Form.Item>
 
       <Form.Item>
