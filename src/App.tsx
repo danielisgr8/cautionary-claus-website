@@ -22,6 +22,7 @@ const App = () => {
     const storageValue = localStorage.getItem("loggedInUser");
     if (storageValue !== null) {
       setLoggedInUser(storageValue);
+      if(history.location.pathname === "/") history.replace(`/profile/${storageValue}`);
     } else {
       history.replace("/");
     }
